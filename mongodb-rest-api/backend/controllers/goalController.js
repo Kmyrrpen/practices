@@ -1,11 +1,11 @@
-import asyncHandler from "express-async-handler";
+const asyncHandler = require("express-async-handler");
 
 /**
  * @desc Get Goals
  * @route GET /api/goals
  * @access Private
  */
-export const getGoals = asyncHandler(async (req, res) => {
+const getGoals = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Get Goals" });
 });
 
@@ -14,7 +14,7 @@ export const getGoals = asyncHandler(async (req, res) => {
  * @route POST /api/goals
  * @access Private
  */
-export const setGoal = asyncHandler(async (req, res) => {
+const setGoal = asyncHandler(async (req, res) => {
   if (!req.body.text) {
     res.status(400);
     throw new Error("Invalid Body");
@@ -28,7 +28,7 @@ export const setGoal = asyncHandler(async (req, res) => {
  * @route DELETE /api/goals/:id
  * @access Private
  */
-export const deleteGoal = asyncHandler(async (req, res) => {
+const deleteGoal = asyncHandler(async (req, res) => {
   res.status(200).json({ message: `delete: GOAL ${req.params.id}` });
 });
 
@@ -37,6 +37,13 @@ export const deleteGoal = asyncHandler(async (req, res) => {
  * @route PUT /api/goals/:id
  * @access Private
  */
-export const putGoal = asyncHandler(async (req, res) => {
+const putGoal = asyncHandler(async (req, res) => {
   res.status(201).json({ message: `put: GOAL ${req.params.id}` });
 });
+
+module.exports = {
+  getGoals,
+  setGoal,
+  deleteGoal,
+  putGoal,
+};

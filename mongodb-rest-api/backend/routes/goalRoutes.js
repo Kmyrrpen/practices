@@ -1,15 +1,14 @@
-import { Router } from "express";
-
-import {
+const { Router } = require("express");
+const {
   deleteGoal,
   getGoals,
   putGoal,
   setGoal,
-} from "../controllers/goalController.mjs";
+} = require("../controllers/goalController.js");
 
 const router = Router();
 
 router.route("/").get(getGoals).post(setGoal);
 router.route("/:id").put(putGoal).delete(deleteGoal);
 
-export default router;
+module.exports = router;
