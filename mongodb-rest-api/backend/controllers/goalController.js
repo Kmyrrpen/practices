@@ -8,7 +8,7 @@ const Goal = require("../models/goalModel");
  * @access Private
  */
 const getGoals = asyncHandler(async (req, res) => {
-  const goals = await Goal.find();
+  const goals = await Goal.find({ user: req.user.id });
   res.status(200).json(goals);
 });
 
@@ -25,7 +25,9 @@ const setGoal = asyncHandler(async (req, res) => {
 
   const goal = await Goal.create({
     text: req.body.text,
+    user: req.user.id,
   });
+
   res.status(201).json(goal);
 });
 
@@ -35,6 +37,7 @@ const setGoal = asyncHandler(async (req, res) => {
  * @access Private
  */
 const deleteGoal = asyncHandler(async (req, res) => {
+ 
   // check if ID from params are valid
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
     res.status(400);
@@ -48,6 +51,13 @@ const deleteGoal = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Goal not Found!");
   }
+
+  // check if goal is owned by the current user
+  if (!goal.user.toString() === req.user.id) {
+    res.status(401);
+    throw new Error("Unauthorized access");
+  }
+
   await goal.remove();
   res.status(200).json({ id: req.params.id });
 });
@@ -58,6 +68,7 @@ const deleteGoal = asyncHandler(async (req, res) => {
  * @access Private
  */
 const putGoal = asyncHandler(async (req, res) => {
+
   // check if payload is valid
   if (!req.body.text) {
     res.status(400);
@@ -76,6 +87,12 @@ const putGoal = asyncHandler(async (req, res) => {
   if (!goal) {
     res.status(400);
     throw new Error("Goal not Found!");
+  }
+
+  // check if goal is owned by the current user
+  if (!goal.user.toString() === req.user.id) {
+    res.status(401);
+    throw new Error("Unauthorized access");
   }
 
   const updatedGoal = await Goal.findByIdAndUpdate(req.params.id, req.body, {

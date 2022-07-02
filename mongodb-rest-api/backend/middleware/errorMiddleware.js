@@ -3,15 +3,11 @@ const notFoundhandler = (req, res, next) => {
   throw new Error("Route doesn't exist");
 };
 
-module.exports = {
-  notFoundhandler,
-};
-
 const errorHandler = (err, req, res, next) => {
   const statusCode = res.statusCode || 500;
   res.status(statusCode).json({
     message: err.message,
-    stack: (process.env.NODE_ENV = "production" ? null : err.stack),
+    stack: (process.env.NODE_ENV === "production" ? null : err.stack),
   });
 };
 
