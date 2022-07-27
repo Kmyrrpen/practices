@@ -26,9 +26,9 @@ const editGoal = async (token: string, goal: Goal) => {
   return response.data;
 };
 
-const deleteGoal = async (token: string, goal: Goal) => {
+const deleteGoal = async (token: string, id: string) => {
   const response = await axios.delete(
-    `${API_URL}/${goal._id}`,
+    `${API_URL}/${id}`,
     createConfig(token)
   );
   return response.data;
