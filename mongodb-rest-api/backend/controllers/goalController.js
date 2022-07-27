@@ -8,7 +8,7 @@ const Goal = require("../models/goalModel");
  * @access Private
  */
 const getGoals = asyncHandler(async (req, res) => {
-  const goals = await Goal.find({ user: req.user.id });
+  const goals = await Goal.find({ user: req.user._id });
   res.status(200).json(goals);
 });
 
@@ -25,7 +25,7 @@ const setGoal = asyncHandler(async (req, res) => {
 
   const goal = await Goal.create({
     text: req.body.text,
-    user: req.user.id,
+    user: req.user._id,
   });
 
   res.status(201).json(goal);
@@ -53,7 +53,7 @@ const deleteGoal = asyncHandler(async (req, res) => {
   }
 
   // check if goal is owned by the current user
-  if (!goal.user.toString() === req.user.id) {
+  if (!goal.user.toString() === req.user._id) {
     res.status(401);
     throw new Error("Unauthorized access");
   }
@@ -90,7 +90,7 @@ const putGoal = asyncHandler(async (req, res) => {
   }
 
   // check if goal is owned by the current user
-  if (!goal.user.toString() === req.user.id) {
+  if (!goal.user.toString() === req.user._id) {
     res.status(401);
     throw new Error("Unauthorized access");
   }

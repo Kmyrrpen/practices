@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { login, reset } from "@/features/auth/authSlice";
-import { LoginUserData, UserData } from "@/features/auth/types";
+import { LoginUserData } from "@/features/auth/types";
 import Spinner from "@/components/Spinner";
 
 const Login: React.FC = () => {
@@ -27,8 +27,9 @@ const Login: React.FC = () => {
       toast.error(message);
     } else if (isSuccess || user) {
       navigate("/");
+    } else {
+      dispatch(reset());
     }
-    dispatch(reset());
   }, [user, isError, isSuccess, message]);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
